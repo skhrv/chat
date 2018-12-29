@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "npm run build-server",
+    "start": "npm run build",
     "build-server": "babel server --out-dir dist --source-maps inline",
     "build-app": "npx webpack -p --env production",
     "build": "npm run build-app && npm run build-server",
