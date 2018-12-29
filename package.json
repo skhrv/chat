@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "npm run build",
+    "start": "node dist/bin/slack.js",
+    "heroku-postbuild": "npm run build",
     "build-server": "babel server --out-dir dist --source-maps inline",
     "build-app": "npx webpack -p --env production",
     "build": "npm run build-app && npm run build-server",
@@ -26,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/skhrv/project-lvl4-s355/issues"
   },
-  "homepage": "",
+  "homepage": "https://l4-chat.herokuapp.com/",
   "dependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
