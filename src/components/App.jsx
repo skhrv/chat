@@ -10,7 +10,7 @@ const App = () => (
       <div className="col-2">
         <ChannelsList />
       </div>
-      <div className="col d-flex flex-column">
+      <div className="col d-flex flex-column h-100">
         <Messages />
         <MessageInput />
       </div>
