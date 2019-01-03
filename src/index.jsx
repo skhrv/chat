@@ -8,32 +8,43 @@ import '../assets/application.css';
 import gon from 'gon';
 import faker from 'faker';
 import cookies from 'js-cookie';
-import App from './App';
-
-// import { composeWithDevTools } from 'redux-devtools-extension';
-// import io from 'socket.io-client';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import io from 'socket.io-client';
+import App from './components/App';
+import reducers from './reducers';
+import '@babel/polyfill';
+import { newMessageSuccess } from './actions';
+import UserContext from './UserContext';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-
-const { channels } = gon;
 
 if (cookies.get('name') === undefined) {
   const name = faker.name.findName();
   cookies.set('name', name);
 }
 
+const name = cookies.get('name');
+const initStateFromGon = ({ channels, messages, currentChannelId }) => (
+  { channels, messages, currentChannelId }
+);
 const store = createStore(
-  state => state,
-  { channels },
+  reducers,
+  { ...initStateFromGon(gon) },
   compose(
-    applyMiddleware(reduxThunk),
+    composeWithDevTools(applyMiddleware(reduxThunk)),
   ),
 );
+const socket = io();
+socket.on('newMessage', (payload) => {
+  store.dispatch(newMessageSuccess(payload));
+});
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <UserContext.Provider value={name}>
+      <App />
+    </UserContext.Provider>
   </Provider>,
   document.getElementById('chat'),
 );
