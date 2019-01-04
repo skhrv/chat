@@ -16,3 +16,5 @@ export const newMessage = message => async (dispatch) => {
     throw e;
   }
 };
+
+export const chooseChannel = createAction('CHOOSE_CHANNEL');

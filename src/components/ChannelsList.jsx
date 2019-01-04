@@ -1,23 +1,45 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import cn from 'classnames';
+import connect from '../connect';
 
 const mapStateToProps = state => ({
   channels: state.channels,
+  currentChannelId: state.currentChannelId,
 });
 
 @connect(mapStateToProps)
 class ChannelsList extends React.Component {
+  chooseChannel = channelId => (e) => {
+    e.preventDefault();
+    const { chooseChannel } = this.props;
+    chooseChannel(channelId);
+  }
+
   render() {
-    const { channels } = this.props;
-    const renderedChannels = channels.map(channel => (
-      <li className="nav-item" key={channel.id}>{`# ${channel.name}`}</li>
-    ));
+    const { channels, currentChannelId } = this.props;
+    const renderedChannels = channels.map(({ name, id }) => {
+      const linkClasses = cn({
+        'text-white': currentChannelId === id,
+        'text-dark': !(currentChannelId === id),
+        'bg-dark': currentChannelId === id,
+      });
+      return (
+        <a
+          href={`#${name}`}
+          key={id}
+          className={linkClasses}
+          onClick={this.chooseChannel(id)}
+        >
+          {`# ${name}`}
+        </a>
+      );
+    });
     return (
       <>
         <h5>Channels</h5>
-        <ul className="nav flex-column">
+        <div className="nav flex-column nav-pills">
           {renderedChannels}
-        </ul>
+        </div>
       </>
     );
   }

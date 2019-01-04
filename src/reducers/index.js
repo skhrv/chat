@@ -10,8 +10,10 @@ const messages = handleActions({
 
 const channels = (state = {}) => state;
 
-const currentChannelId = (state = {}) => state;
-
+const currentChannelId = handleActions({
+  [actions.chooseChannel]:
+    (state, { payload }) => payload,
+}, 1);
 export default combineReducers({
   messages,
   channels,
