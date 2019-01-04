@@ -17,8 +17,14 @@ class MessageInput extends React.Component {
     this.textInput = React.createRef();
   }
 
+  componentDidUpdate() {
+    this.textInput.current.getRenderedComponent().focus();
+  }
 
   sendMessage = async ({ text }) => {
+    if (text === undefined) {
+      return;
+    }
     const name = this.context;
     const { newMessage, currentChannelId, reset } = this.props;
     const data = { currentChannelId, attributes: { text, name } };
@@ -28,7 +34,6 @@ class MessageInput extends React.Component {
       throw new SubmissionError({ _error: e.message });
     }
     reset();
-    this.textInput.current.getRenderedComponent().focus();
   }
 
   render() {
