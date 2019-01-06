@@ -13,7 +13,9 @@ import io from 'socket.io-client';
 import App from './components/App';
 import reducers from './reducers';
 import '@babel/polyfill';
-import { newMessageSuccess } from './actions';
+import {
+  newMessageSuccess, newChannelSuccess, editChannelSuccess, removeChannelSuccess,
+} from './actions';
 import UserContext from './UserContext';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -24,11 +26,16 @@ if (cookies.get('name') === undefined) {
   const name = faker.name.findName();
   cookies.set('name', name);
 }
-
 const name = cookies.get('name');
-const initStateFromGon = ({ channels, messages, currentChannelId }) => (
-  { channels, messages, currentChannelId }
-);
+
+const initStateFromGon = ({ channels, messages, currentChannelId }) => {
+  const normalize = (acc, item) => ({ ...acc, [item.id]: item });
+  const normalizedChannels = channels.reduce(normalize, {});
+  const normilizedMessages = messages.reduce(normalize, {});
+  const defaultChannelId = channels.find(c => !c.removable).id;
+  const channelUI = { currentChannelId, defaultChannelId };
+  return { channels: normalizedChannels, messages: normilizedMessages, channelUI };
+};
 const store = createStore(
   reducers,
   { ...initStateFromGon(gon) },
@@ -36,10 +43,21 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(reduxThunk)),
   ),
 );
+
 const socket = io();
 socket.on('newMessage', (payload) => {
   store.dispatch(newMessageSuccess(payload));
 });
+socket.on('newChannel', (payload) => {
+  store.dispatch(newChannelSuccess(payload));
+});
+socket.on('renameChannel', (payload) => {
+  store.dispatch(editChannelSuccess(payload));
+});
+socket.on('removeChannel', (payload) => {
+  store.dispatch(removeChannelSuccess(payload));
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <UserContext.Provider value={name}>
