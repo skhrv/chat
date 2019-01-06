@@ -4,7 +4,7 @@ import connect from '../connect';
 import UserContext from '../UserContext';
 
 const mapStateToProps = state => ({
-  currentChannelId: state.currentChannelId,
+  currentChannelId: state.channelUI.currentChannelId,
 });
 
 @connect(mapStateToProps)
