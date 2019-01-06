@@ -1,10 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import StayScrolled from 'react-stay-scrolled';
-import messagesSelector from '../selectors';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { messagesSelector, currentChannelSelector } from '../selectors';
+import connect from '../connect';
 
 const mapStateToProps = state => ({
   messages: messagesSelector(state),
+  currentChannel: currentChannelSelector(state),
 });
 
 @connect(mapStateToProps)
@@ -21,6 +23,16 @@ class Messages extends React.Component {
     this.scrollBottom = scrollBottom;
   }
 
+  handleEditChannelModal = () => {
+    const { openEditChannelModal, currentChannel } = this.props;
+    openEditChannelModal(currentChannel);
+  }
+
+  handleRemoveChannelModal = () => {
+    const { openRemoveChannelModal } = this.props;
+    openRemoveChannelModal();
+  }
+
   renderMessages() {
     const { messages } = this.props;
     return messages.map(({ name, text, id }) => (
@@ -32,11 +44,21 @@ class Messages extends React.Component {
   }
 
   render() {
+    const { currentChannel: { name, removable } } = this.props;
     return (
-      <StayScrolled className="overflow-auto pb-2" provideControllers={this.storeScrolledControllers}>
-        {this.renderMessages()}
-      </StayScrolled>
-
+      <>
+        <div className="d-flex align-items-baseline mb-2">
+          <span className="h5 mr-auto mb-0"><strong>{`#${name}`}</strong></span>
+          <DropdownButton title="Channel Settings" id="bg-nested-dropdown" variant="light" size="sm">
+            <Dropdown.Item as="button" onClick={this.handleEditChannelModal}>Edit Channel</Dropdown.Item>
+            {removable && <Dropdown.Item as="button" onClick={this.handleRemoveChannelModal}>Delete Channel</Dropdown.Item>}
+          </DropdownButton>
+        </div>
+        <div className="border-bottom ml-n3 " />
+        <StayScrolled className="overflow-auto pb-2" provideControllers={this.storeScrolledControllers}>
+          {this.renderMessages()}
+        </StayScrolled>
+      </>
     );
   }
 }
