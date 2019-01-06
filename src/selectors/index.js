@@ -1,8 +1,18 @@
 import { createSelector } from 'reselect';
 
-const messagesSelector = createSelector(
+export const messagesSelector = createSelector(
   state => Object.values(state.messages),
-  state => state.currentChannelId,
+  state => state.channelUI.currentChannelId,
   (messages, currentChannelId) => messages.filter(m => m.channelId === currentChannelId),
 );
-export default messagesSelector;
+
+export const currentChannelSelector = createSelector(
+  state => state.channels,
+  state => state.channelUI.currentChannelId,
+  (channels, currentChannelId) => channels[currentChannelId],
+);
+
+export const channelsNameSelector = createSelector(
+  state => Object.values(state.channels).map(c => c.name),
+  channelsName => new Set(channelsName),
+);
