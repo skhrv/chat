@@ -10,9 +10,10 @@ import faker from 'faker';
 import cookies from 'js-cookie';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import io from 'socket.io-client';
+import { keyBy } from 'lodash';
+import '@babel/polyfill';
 import App from './components/App';
 import reducers from './reducers';
-import '@babel/polyfill';
 import {
   newMessageSuccess, newChannelSuccess, editChannelSuccess, removeChannelSuccess,
 } from './actions';
@@ -29,9 +30,8 @@ if (cookies.get('name') === undefined) {
 const name = cookies.get('name');
 
 const initStateFromGon = ({ channels, messages, currentChannelId }) => {
-  const normalize = (acc, item) => ({ ...acc, [item.id]: item });
-  const normalizedChannels = channels.reduce(normalize, {});
-  const normilizedMessages = messages.reduce(normalize, {});
+  const normalizedChannels = keyBy(channels, 'id');
+  const normilizedMessages = keyBy(messages, 'id');
   const defaultChannelId = channels.find(c => !c.removable).id;
   const channelUI = { currentChannelId, defaultChannelId };
   return { channels: normalizedChannels, messages: normilizedMessages, channelUI };
