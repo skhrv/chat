@@ -3,12 +3,12 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
 import connect from '../connect';
-import { channelsNameSelector } from '../selectors';
+import { channelsNameSelector, modalAddUISelector } from '../selectors';
 
 const mapStateToProps = state => ({
   channelsNameList: channelsNameSelector(state),
   currentChannelId: state.channelUI.currentChannelId,
-  show: state.addChannelModal.show,
+  show: modalAddUISelector(state),
 });
 
 @connect(mapStateToProps)

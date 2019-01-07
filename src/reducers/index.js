@@ -29,33 +29,31 @@ const channelUI = handleActions({
     state => ({ ...state, currentChannelId: state.defaultChannelId }),
 }, {});
 
-const addChannelModal = handleActions({
+/*
+ModalUI = {
+  show: boolean;
+  type: 'edit' | 'remove' | 'add'
+}
+*/
+const modal = handleActions({
   [actions.closeAddChannelModal]:
     () => ({ show: false }),
   [actions.openAddChannelModal]:
-    () => ({ show: true }),
-}, {});
-
-const editChannelModal = handleActions({
+    () => ({ show: true, type: 'add' }),
   [actions.closeEditChannelModal]:
     () => ({ show: false }),
   [actions.openEditChannelModal]:
-    (state, { payload }) => ({ show: true, editedChannel: payload }),
-}, {});
-
-const removeChannelModal = handleActions({
+    (state, { payload }) => ({ show: true, type: 'edit', editedChannel: payload }),
   [actions.closeRemoveChannelModal]:
     () => ({ show: false }),
   [actions.openRemoveChannelModal]:
-    () => ({ show: true }),
+    () => ({ show: true, type: 'remove' }),
 }, {});
 
 export default combineReducers({
   messages,
   channels,
   channelUI,
-  addChannelModal,
-  editChannelModal,
-  removeChannelModal,
+  modal,
   form: formReducer,
 });

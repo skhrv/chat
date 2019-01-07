@@ -3,13 +3,13 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
 import connect from '../connect';
-import { channelsNameSelector } from '../selectors';
+import { channelsNameSelector, modalEditUISelector } from '../selectors';
 
 const mapStateToProps = state => ({
   channelsNameList: channelsNameSelector(state),
   currentChannelId: state.channelUI.currentChannelId,
-  show: state.editChannelModal.show,
-  editedChannel: state.editChannelModal.editedChannel,
+  show: modalEditUISelector(state),
+  editedChannel: state.modal.editedChannel,
 });
 
 @connect(mapStateToProps)
@@ -50,7 +50,7 @@ class EditChannelModal extends React.Component {
     return (
       <Modal show={show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add channel</Modal.Title>
+          <Modal.Title>Edit this channel</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSubmit(this.handleSubmit)}>
           <Modal.Body>

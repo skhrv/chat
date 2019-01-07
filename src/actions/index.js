@@ -2,9 +2,9 @@ import { createAction } from 'redux-actions';
 import axios from 'axios';
 import routes from '../routes';
 
-export const newMessageRequest = createAction('NEW_MESSAGE_REQUEST');
-export const newMessageSuccess = createAction('NEW_MESSAGE_SUCCESS');
-export const newMessageFailure = createAction('NEW_MESSAGE_FAILURE');
+export const newMessageRequest = createAction('MESSAGE_NEW_REQUEST');
+export const newMessageSuccess = createAction('MESSAGE_NEW_SUCCESS');
+export const newMessageFailure = createAction('MESSAGE_NEW_FAILURE');
 
 export const newMessage = message => async (dispatch) => {
   dispatch(newMessageRequest());
@@ -17,11 +17,11 @@ export const newMessage = message => async (dispatch) => {
   }
 };
 
-export const chooseChannel = createAction('CHOOSE_CHANNEL');
+export const chooseChannel = createAction('CHANNEL_CHOOSE');
 
-export const newChannelRequest = createAction('NEW_CHANNEL_REQUEST');
-export const newChannelSuccess = createAction('NEW_CHANNEL_SUCCESS');
-export const newChannelFailure = createAction('NEW_CHANNEL_FAILURE');
+export const newChannelRequest = createAction('CHANNEL_NEW_REQUEST');
+export const newChannelSuccess = createAction('CHANNEL_NEW_SUCCESS');
+export const newChannelFailure = createAction('CHANNEL_NEW_FAILURE');
 
 
 export const newChannel = channelName => async (dispatch) => {
@@ -36,9 +36,9 @@ export const newChannel = channelName => async (dispatch) => {
   }
 };
 
-export const removeChannelRequest = createAction('REMOVE_CHANNEL_REQUEST');
-export const removeChannelSuccess = createAction('REMOVE_CHANNEL_SUCCESS');
-export const removeChannelFailure = createAction('REMOVE_CHANNEL_FAILURE');
+export const removeChannelRequest = createAction('CHANNEL_REMOVE_REQUEST');
+export const removeChannelSuccess = createAction('CHANNEL_REMOVE_SUCCESS');
+export const removeChannelFailure = createAction('CHANNEL_REMOVE_FAILURE');
 
 export const removeChannel = id => async (dispatch) => {
   dispatch(removeChannelRequest());
@@ -52,9 +52,9 @@ export const removeChannel = id => async (dispatch) => {
   }
 };
 
-export const editChannelRequest = createAction('EDIT_CHANNEL_REQUEST');
-export const editChannelSuccess = createAction('EDIT_CHANNEL_SUCCESS');
-export const editChannelFailure = createAction('EDIT_CHANNEL_FAILURE');
+export const editChannelRequest = createAction('CHANNEL_EDIT_REQUEST');
+export const editChannelSuccess = createAction('CHANNEL_EDIT_SUCCESS');
+export const editChannelFailure = createAction('CHANNEL_EDIT_FAILURE');
 
 export const editChannel = ({ id, name }) => async (dispatch) => {
   dispatch(editChannelRequest());
@@ -69,9 +69,9 @@ export const editChannel = ({ id, name }) => async (dispatch) => {
   }
 };
 
-export const closeEditChannelModal = createAction('CLOSE_EDIT_CHANNEL_MODAL');
-export const openEditChannelModal = createAction('OPEN_EDIT_CHANNEL_MODAL');
-export const closeAddChannelModal = createAction('CLOSE_ADD_CHANNEL_MODAL');
-export const openAddChannelModal = createAction('OPEN_ADD_CHANNEL_MODAL');
-export const closeRemoveChannelModal = createAction('CLOSE_REMOVE_CHANNEL_MODAL');
-export const openRemoveChannelModal = createAction('OPEN_REMOVE_CHANNEL_MODAL');
+export const closeEditChannelModal = createAction('MODAL_EDIT_CHANNEL_CLOSE');
+export const openEditChannelModal = createAction('MODAL_EDIT_CHANNEL_OPEN');
+export const closeAddChannelModal = createAction('MODAL_ADD_CHANNEL_CLOSE');
+export const openAddChannelModal = createAction('MODAL_ADD_CHANNEL_OPEN');
+export const closeRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_CLOSE');
+export const openRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_OPEN');

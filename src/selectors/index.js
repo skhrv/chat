@@ -16,3 +16,21 @@ export const channelsNameSelector = createSelector(
   state => Object.values(state.channels).map(c => c.name),
   channelsName => new Set(channelsName),
 );
+
+export const modalAddUISelector = createSelector(
+  state => state.modal.show,
+  state => state.modal.type,
+  (show, type) => show && type === 'add',
+);
+
+export const modalEditUISelector = createSelector(
+  state => state.modal.show,
+  state => state.modal.type,
+  (show, type) => show && type === 'edit',
+);
+
+export const modalRemoveUISelector = createSelector(
+  state => state.modal.show,
+  state => state.modal.type,
+  (show, type) => show && type === 'remove',
+);

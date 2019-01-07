@@ -3,13 +3,13 @@ import { reduxForm, SubmissionError } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
 import connect from '../connect';
-import { currentChannelSelector } from '../selectors';
+import { currentChannelSelector, modalRemoveUISelector } from '../selectors';
 
 const mapStateToProps = state => ({
   channels: state.channels,
   currentChannelId: state.channelUI.currentChannelId,
   defaultChannelId: state.channelUI.defaultChannelId,
-  show: state.removeChannelModal.show,
+  show: modalRemoveUISelector(state),
   currentChannel: currentChannelSelector(state),
 });
 
@@ -39,7 +39,7 @@ class RemoveChannelModal extends React.Component {
     return (
       <Modal show={show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add channel</Modal.Title>
+          <Modal.Title>Delete this channel</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSubmit(this.handleSubmit)}>
           <Modal.Body>
