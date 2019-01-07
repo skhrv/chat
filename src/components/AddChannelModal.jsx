@@ -1,12 +1,11 @@
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
 import connect from '../connect';
-import { channelsNameSelector, modalAddUISelector } from '../selectors';
+import { modalAddUISelector } from '../selectors';
 
 const mapStateToProps = state => ({
-  channelsNameList: channelsNameSelector(state),
   currentChannelId: state.channelUI.currentChannelId,
   show: modalAddUISelector(state),
 });
@@ -20,17 +19,8 @@ class AddChannelModal extends React.Component {
   }
 
   handleSubmit = async ({ channelName }) => {
-    const { closeAddChannelModal, newChannel, channelsNameList } = this.props;
-
-    try {
-      if (channelsNameList.has(channelName)) {
-        throw new Error(`Name "${channelName}" is already taken by a channel`);
-      }
-      await newChannel(channelName);
-    } catch (e) {
-      throw new SubmissionError({ _error: e.message });
-    }
-    closeAddChannelModal();
+    const { newChannel } = this.props;
+    await newChannel(channelName);
   }
 
   render() {

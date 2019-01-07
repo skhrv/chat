@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm, SubmissionError } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
 import connect from '../connect';
@@ -22,13 +22,8 @@ class RemoveChannelModal extends React.Component {
   }
 
   handleSubmit = async () => {
-    const { closeRemoveChannelModal, removeChannel, currentChannelId } = this.props;
-    try {
-      await removeChannel(currentChannelId);
-    } catch (e) {
-      throw new SubmissionError({ _error: e.message });
-    }
-    closeRemoveChannelModal();
+    const { removeChannel, currentChannelId } = this.props;
+    await removeChannel(currentChannelId);
   }
 
   render() {
@@ -44,7 +39,7 @@ class RemoveChannelModal extends React.Component {
         <form onSubmit={handleSubmit(this.handleSubmit)}>
           <Modal.Body>
             {`Are you sure you want to delete #${currentChannel.name}? All of the channel’s messages will be removed immediately. This cannot be undone.`}
-            {error && <span className="font-italic text-danger">{error}</span>}
+            {error && <><br /><span className="font-italic text-danger">{error}</span></>}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>

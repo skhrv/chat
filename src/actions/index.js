@@ -1,10 +1,33 @@
 import { createAction } from 'redux-actions';
 import axios from 'axios';
+import { SubmissionError } from 'redux-form';
 import routes from '../routes';
+import { channelsNameSelector } from '../selectors';
 
 export const newMessageRequest = createAction('MESSAGE_NEW_REQUEST');
 export const newMessageSuccess = createAction('MESSAGE_NEW_SUCCESS');
 export const newMessageFailure = createAction('MESSAGE_NEW_FAILURE');
+
+export const chooseChannel = createAction('CHANNEL_CHOOSE');
+
+export const newChannelRequest = createAction('CHANNEL_NEW_REQUEST');
+export const newChannelSuccess = createAction('CHANNEL_NEW_SUCCESS');
+export const newChannelFailure = createAction('CHANNEL_NEW_FAILURE');
+
+export const removeChannelRequest = createAction('CHANNEL_REMOVE_REQUEST');
+export const removeChannelSuccess = createAction('CHANNEL_REMOVE_SUCCESS');
+export const removeChannelFailure = createAction('CHANNEL_REMOVE_FAILURE');
+
+export const editChannelRequest = createAction('CHANNEL_EDIT_REQUEST');
+export const editChannelSuccess = createAction('CHANNEL_EDIT_SUCCESS');
+export const editChannelFailure = createAction('CHANNEL_EDIT_FAILURE');
+
+export const closeEditChannelModal = createAction('MODAL_EDIT_CHANNEL_CLOSE');
+export const openEditChannelModal = createAction('MODAL_EDIT_CHANNEL_OPEN');
+export const closeAddChannelModal = createAction('MODAL_ADD_CHANNEL_CLOSE');
+export const openAddChannelModal = createAction('MODAL_ADD_CHANNEL_OPEN');
+export const closeRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_CLOSE');
+export const openRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_OPEN');
 
 export const newMessage = message => async (dispatch) => {
   dispatch(newMessageRequest());
@@ -17,28 +40,25 @@ export const newMessage = message => async (dispatch) => {
   }
 };
 
-export const chooseChannel = createAction('CHANNEL_CHOOSE');
-
-export const newChannelRequest = createAction('CHANNEL_NEW_REQUEST');
-export const newChannelSuccess = createAction('CHANNEL_NEW_SUCCESS');
-export const newChannelFailure = createAction('CHANNEL_NEW_FAILURE');
-
-
-export const newChannel = channelName => async (dispatch) => {
+export const newChannel = channelName => async (dispatch, getState) => {
   dispatch(newChannelRequest());
+  const state = getState();
+  const channelsNameList = channelsNameSelector(state);
   try {
+    if (channelsNameList.has(channelName)) {
+      throw new Error(`Name "${channelName}" is already taken by a channel`);
+    }
+
     const res = await axios
       .post(routes.channels(), { data: { attributes: { name: channelName } } });
+
     dispatch(newChannelSuccess(res.data));
+    dispatch(closeAddChannelModal());
   } catch (e) {
     dispatch(newChannelFailure(e));
-    throw e;
+    throw new SubmissionError({ _error: e.message });
   }
 };
-
-export const removeChannelRequest = createAction('CHANNEL_REMOVE_REQUEST');
-export const removeChannelSuccess = createAction('CHANNEL_REMOVE_SUCCESS');
-export const removeChannelFailure = createAction('CHANNEL_REMOVE_FAILURE');
 
 export const removeChannel = id => async (dispatch) => {
   dispatch(removeChannelRequest());
@@ -46,32 +66,31 @@ export const removeChannel = id => async (dispatch) => {
     await axios
       .delete(routes.channel(id));
     dispatch(removeChannelSuccess({ data: { attributes: { id } } }));
+    dispatch(closeRemoveChannelModal());
   } catch (e) {
     dispatch(removeChannelFailure(e));
-    throw e;
+    throw new SubmissionError({ _error: e.message });
   }
 };
 
-export const editChannelRequest = createAction('CHANNEL_EDIT_REQUEST');
-export const editChannelSuccess = createAction('CHANNEL_EDIT_SUCCESS');
-export const editChannelFailure = createAction('CHANNEL_EDIT_FAILURE');
-
-export const editChannel = ({ id, name }) => async (dispatch) => {
+export const editChannel = newName => async (dispatch, getState) => {
   dispatch(editChannelRequest());
+  const state = getState();
+  const channelsNameList = channelsNameSelector(state);
+  const { name: prevName, id } = state.modal.editedChannel;
   try {
+    if (channelsNameList.has(newName) && newName !== prevName) {
+      throw new Error(`Name "${newName}" is already taken by a channel`);
+    }
+
     await axios
-      .patch(routes.channel(id), { data: { attributes: { name } } });
-    const data = { data: { id, attributes: { id, name } } };
+      .patch(routes.channel(id), { data: { attributes: { name: newName } } });
+    const data = { data: { id, attributes: { id, name: newName } } };
+
     dispatch(editChannelSuccess(data));
+    dispatch(closeEditChannelModal());
   } catch (e) {
     dispatch(editChannelFailure(e));
-    throw e;
+    throw new SubmissionError({ _error: e.message });
   }
 };
-
-export const closeEditChannelModal = createAction('MODAL_EDIT_CHANNEL_CLOSE');
-export const openEditChannelModal = createAction('MODAL_EDIT_CHANNEL_OPEN');
-export const closeAddChannelModal = createAction('MODAL_ADD_CHANNEL_CLOSE');
-export const openAddChannelModal = createAction('MODAL_ADD_CHANNEL_OPEN');
-export const closeRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_CLOSE');
-export const openRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_OPEN');
