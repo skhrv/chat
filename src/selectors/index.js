@@ -20,17 +20,17 @@ export const channelsNameSelector = createSelector(
 export const modalAddUISelector = createSelector(
   state => state.modal.show,
   state => state.modal.type,
-  (show, type) => show && type === 'add',
+  (show, type) => show && type === 'adding',
 );
 
 export const modalEditUISelector = createSelector(
   state => state.modal.show,
   state => state.modal.type,
-  (show, type) => show && type === 'edit',
+  (show, type) => show && type === 'editing',
 );
 
 export const modalRemoveUISelector = createSelector(
   state => state.modal.show,
   state => state.modal.type,
-  (show, type) => show && type === 'remove',
+  (show, type) => show && type === 'removing',
 );
