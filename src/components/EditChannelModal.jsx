@@ -32,7 +32,7 @@ class EditChannelModal extends React.Component {
       closeEditChannelModal, editChannel, editedChannel, channelsNameList,
     } = this.props;
     try {
-      if (channelsNameList.has(channelName) && channelName !== editChannel.name) {
+      if (channelsNameList.has(channelName) && channelName !== editedChannel.name) {
         throw new Error(`Name "${channelName}" is already taken by a channel`);
       }
       await editChannel({ name: channelName, id: editedChannel.id });
