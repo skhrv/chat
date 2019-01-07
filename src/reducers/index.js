@@ -1,14 +1,14 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import { omitBy } from 'lodash';
+import { omit } from 'lodash';
 import * as actions from '../actions';
 
 const messages = handleActions({
   [actions.newMessageSuccess]:
     (state, { payload: { data } }) => ({ ...state, [data.id]: data.attributes }),
   [actions.removeChannelSuccess]:
-    (state, { payload: { data } }) => omitBy(state, value => value.channelId === data.id),
+    (state, { payload: { data } }) => omit(state, data.id),
 }, {});
 
 const channels = handleActions({
@@ -19,7 +19,7 @@ const channels = handleActions({
     return { ...state, [id]: { ...state[id], ...attributes } };
   },
   [actions.removeChannelSuccess]:
-    (state, { payload: { data } }) => omitBy(state, value => value.id === data.id),
+    (state, { payload: { data } }) => omit(state, data.id),
 }, {});
 
 const channelUI = handleActions({
