@@ -17,8 +17,8 @@ const mapStateToProps = state => ({
 @reduxForm({ form: 'removeChannelModal' })
 class RemoveChannelModal extends React.Component {
   handleClose = () => {
-    const { closeRemoveChannelModal } = this.props;
-    closeRemoveChannelModal();
+    const { closeChannelModal } = this.props;
+    closeChannelModal();
   }
 
   handleSubmit = async () => {

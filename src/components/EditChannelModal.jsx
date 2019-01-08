@@ -22,8 +22,8 @@ class EditChannelModal extends React.Component {
   }
 
   handleClose = () => {
-    const { closeEditChannelModal } = this.props;
-    closeEditChannelModal();
+    const { closeChannelModal } = this.props;
+    closeChannelModal();
   }
 
   handleSubmit = async ({ channelName }) => {

@@ -29,23 +29,14 @@ const channelUI = handleActions({
     state => ({ ...state, currentChannelId: state.defaultChannelId }),
 }, {});
 
-/*
-ModalUI = {
-  show: boolean;
-  type: 'edit' | 'remove' | 'add'
-}
-*/
+
 const modal = handleActions({
-  [actions.closeAddChannelModal]:
+  [actions.closeChannelModal]:
     () => ({ show: false }),
   [actions.openAddChannelModal]:
     () => ({ show: true, type: 'adding' }),
-  [actions.closeEditChannelModal]:
-    () => ({ show: false }),
   [actions.openEditChannelModal]:
     (state, { payload }) => ({ show: true, type: 'editing', editedChannel: payload }),
-  [actions.closeRemoveChannelModal]:
-    () => ({ show: false }),
   [actions.openRemoveChannelModal]:
     () => ({ show: true, type: 'removing' }),
 }, {});

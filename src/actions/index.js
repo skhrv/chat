@@ -22,11 +22,9 @@ export const editChannelRequest = createAction('CHANNEL_EDIT_REQUEST');
 export const editChannelSuccess = createAction('CHANNEL_EDIT_SUCCESS');
 export const editChannelFailure = createAction('CHANNEL_EDIT_FAILURE');
 
-export const closeEditChannelModal = createAction('MODAL_EDIT_CHANNEL_CLOSE');
+export const closeChannelModal = createAction('MODAL_CHANNEL_CLOSE');
 export const openEditChannelModal = createAction('MODAL_EDIT_CHANNEL_OPEN');
-export const closeAddChannelModal = createAction('MODAL_ADD_CHANNEL_CLOSE');
 export const openAddChannelModal = createAction('MODAL_ADD_CHANNEL_OPEN');
-export const closeRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_CLOSE');
 export const openRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_OPEN');
 
 export const newMessage = message => async (dispatch) => {
@@ -53,7 +51,7 @@ export const newChannel = channelName => async (dispatch, getState) => {
       .post(routes.channels(), { data: { attributes: { name: channelName } } });
 
     dispatch(newChannelSuccess(res.data));
-    dispatch(closeAddChannelModal());
+    dispatch(closeChannelModal());
   } catch (e) {
     dispatch(newChannelFailure(e));
     throw new SubmissionError({ _error: e.message });
@@ -66,7 +64,7 @@ export const removeChannel = id => async (dispatch) => {
     await axios
       .delete(routes.channel(id));
     dispatch(removeChannelSuccess({ data: { attributes: { id } } }));
-    dispatch(closeRemoveChannelModal());
+    dispatch(closeChannelModal());
   } catch (e) {
     dispatch(removeChannelFailure(e));
     throw new SubmissionError({ _error: e.message });
@@ -88,7 +86,7 @@ export const editChannel = newName => async (dispatch, getState) => {
     const data = { data: { id, attributes: { id, name: newName } } };
 
     dispatch(editChannelSuccess(data));
-    dispatch(closeEditChannelModal());
+    dispatch(closeChannelModal());
   } catch (e) {
     dispatch(editChannelFailure(e));
     throw new SubmissionError({ _error: e.message });
