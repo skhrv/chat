@@ -34,11 +34,11 @@ const modal = handleActions({
   [actions.closeChannelModal]:
     () => ({ show: false }),
   [actions.openAddChannelModal]:
-    () => ({ show: true, type: 'adding' }),
+    () => ({ show: true, action: 'adding' }),
   [actions.openEditChannelModal]:
-    (state, { payload }) => ({ show: true, type: 'editing', editedChannel: payload }),
+    (state, { payload }) => ({ show: true, action: 'editing', editedChannel: payload }),
   [actions.openRemoveChannelModal]:
-    () => ({ show: true, type: 'removing' }),
+    () => ({ show: true, action: 'removing' }),
 }, {});
 
 export default combineReducers({

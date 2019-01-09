@@ -19,18 +19,18 @@ export const channelsNameSelector = createSelector(
 
 export const modalAddUISelector = createSelector(
   state => state.modal.show,
-  state => state.modal.type,
-  (show, type) => show && type === 'adding',
+  state => state.modal.action,
+  (show, action) => show && action === 'adding',
 );
 
 export const modalEditUISelector = createSelector(
   state => state.modal.show,
-  state => state.modal.type,
-  (show, type) => show && type === 'editing',
+  state => state.modal.action,
+  (show, action) => show && action === 'editing',
 );
 
 export const modalRemoveUISelector = createSelector(
   state => state.modal.show,
-  state => state.modal.type,
-  (show, type) => show && type === 'removing',
+  state => state.modal.action,
+  (show, action) => show && action === 'removing',
 );
