@@ -2,7 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
-import connect from '../connect';
+import connect from '../utils/connect';
 import { currentChannelSelector, modalRemoveUISelector } from '../selectors';
 
 const mapStateToProps = state => ({
@@ -30,7 +30,6 @@ class RemoveChannelModal extends React.Component {
     const {
       show, submitting, handleSubmit, error, currentChannel,
     } = this.props;
-
     return (
       <Modal show={show} onHide={this.handleClose}>
         <Modal.Header closeButton>
@@ -38,7 +37,10 @@ class RemoveChannelModal extends React.Component {
         </Modal.Header>
         <form onSubmit={handleSubmit(this.handleSubmit)}>
           <Modal.Body>
-            {`Are you sure you want to delete #${currentChannel.name}? All of the channel’s messages will be removed immediately. This cannot be undone.`}
+            Are you sure you want to delete
+            {<strong>{` #${currentChannel.name}`}</strong>}
+            .
+            All of the channel’s messages will be removed immediately. This cannot be undone.
             {error && <><br /><span className="font-italic text-danger">{error}</span></>}
           </Modal.Body>
           <Modal.Footer>

@@ -1,8 +1,9 @@
 import { createAction } from 'redux-actions';
 import axios from 'axios';
 import { SubmissionError } from 'redux-form';
-import routes from '../routes';
+import routes from '../utils/routes';
 import { channelsNameSelector } from '../selectors';
+import { checkMaxLengthChannelName, checkMaxLengthMessage } from '../utils/validators';
 
 export const newMessageRequest = createAction('MESSAGE_NEW_REQUEST');
 export const newMessageSuccess = createAction('MESSAGE_NEW_SUCCESS');
@@ -29,7 +30,9 @@ export const openRemoveChannelModal = createAction('MODAL_REMOVE_CHANNEL_OPEN');
 
 export const newMessage = message => async (dispatch) => {
   dispatch(newMessageRequest());
+  const { attributes: { text } } = message;
   try {
+    checkMaxLengthMessage(text);
     const res = await axios.post(routes.messages(message.currentChannelId), { data: message });
     dispatch(newMessageSuccess(res.data));
   } catch (e) {
@@ -43,6 +46,7 @@ export const newChannel = channelName => async (dispatch, getState) => {
   const state = getState();
   const channelsNameList = channelsNameSelector(state);
   try {
+    checkMaxLengthChannelName(channelName);
     if (channelsNameList.has(channelName)) {
       throw new Error(`Name "${channelName}" is already taken by a channel`);
     }
@@ -77,6 +81,7 @@ export const editChannel = newName => async (dispatch, getState) => {
   const channelsNameList = channelsNameSelector(state);
   const { name: prevName, id } = state.modal.editedChannel;
   try {
+    checkMaxLengthChannelName(newName);
     if (channelsNameList.has(newName) && newName !== prevName) {
       throw new Error(`Name "${newName}" is already taken by a channel`);
     }

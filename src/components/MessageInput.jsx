@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import connect from '../connect';
+import connect from '../utils/connect';
 import UserContext from '../UserContext';
 
 const mapStateToProps = state => ({

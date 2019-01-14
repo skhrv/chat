@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import connect from '../connect';
+import connect from '../utils/connect';
 
 const mapStateToProps = state => ({
   channels: state.channels,

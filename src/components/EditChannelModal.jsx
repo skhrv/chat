@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
 
-import connect from '../connect';
+import connect from '../utils/connect';
 import { modalEditUISelector } from '../selectors';
 
 const mapStateToProps = state => ({

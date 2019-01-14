@@ -2,7 +2,7 @@ import React from 'react';
 import StayScrolled from 'react-stay-scrolled';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { messagesSelector, currentChannelSelector } from '../selectors';
-import connect from '../connect';
+import connect from '../utils/connect';
 
 const mapStateToProps = state => ({
   messages: messagesSelector(state),
