@@ -14,8 +14,7 @@
     "start": "NODE_ENV='production' node dist/bin/slack.js",
     "build-server": "babel server --out-dir dist --source-maps inline",
     "build-app": "npx webpack -p --env production",
-    "build": "npm run build-app && npm run build-server",
-    "postinstall": "npm run build"
+    "build": "npm run build-app && npm run build-server"
   },
   "repository": {
     "type": "git",
@@ -91,5 +90,6 @@
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "nodemon": "^1.18.9"
-  }
+  },
+  "heroku-run-build-script": true
 }
