@@ -1,4 +1,4 @@
-# project-lvl4-s355
+# Чат (Slack)
 [![Build Status](https://travis-ci.org/skhrv/project-lvl4-s355.svg?branch=master)](https://travis-ci.org/skhrv/project-lvl4-s355)
 
 
